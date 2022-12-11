@@ -19,7 +19,10 @@ def hash_seq(s):
 def check_table_exist(table_name):
     return table_name in db.currently_existing_tables
 
-
+def save_unique_rows(path_to_md5sum,output):
+      df = pd.read_csv(path_to_md5sum)
+      df1 = df.drop_duplicates(keep='first')
+      df1.to_csv(output, index=False,header=False)
 
 class FrequencyTable:
 
@@ -32,11 +35,11 @@ class FrequencyTable:
         hash_file_path = '/'.join(self.frequency_csv_path.split('/')[:-1])+ '/md5sum_variant_frequency.csv'
         with open(hash_file_path, w) as hash_file:
             for line in file_yield(self.frequency_csv_path):
-                unique_variant_hash =  hash_seq(''.join(line[:3]))
+                unique_variant_hash =  hash_seq('-'.join(line.split('\t')[:3]))
                 hash_id_line = f"{unique_variant_hash},{line}"
                 hash_file.write(hash_id_line)
         sorted_unique_file_path = '/'.join(self.frequency_csv_path.split('/')[:-1])+ '/unique_variant_frequency.csv'
-        os.system(f'sort {hash_file_path}| uniq -u > {sorted_unique_file_path}')
+        save_unique_rows(hash_file_path, sorted_unique_file_path)
         self.sorted_unique_path = sorted_unique_file_path
 
     def table_frequency_create(self ,database):
