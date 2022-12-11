@@ -1,0 +1,3 @@
+bed.txt
+example2_coverage.bed
+example_coverage.bed

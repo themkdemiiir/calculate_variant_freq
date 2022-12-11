@@ -1,0 +1,4 @@
+example2.vcf
+example.vcf
+variant_freq.csv
+vcf.txt
