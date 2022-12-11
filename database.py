@@ -25,8 +25,8 @@ class FrequencyTable:
 
     def __init__(self, frequency_csv_path):
         self.frequency_csv_path = frequency_csv_path
+        self.sorted_unique_path = None
         self.make_hash_ids()
-        self.sorted_unique_path = make_hash_ids()
 
     def make_hash_ids(self):
         hash_file_path = '/'.join(self.frequency_csv_path.split('/')[:-1])+ '/md5sum_variant_frequency.csv'
@@ -37,7 +37,7 @@ class FrequencyTable:
                 hash_file.write(hash_id_line)
         sorted_unique_file_path = '/'.join(self.frequency_csv_path.split('/')[:-1])+ '/unique_variant_frequency.csv'
         os.system(f'sort {hash_file_path}| uniq -u > {sorted_unique_file_path}')
-        return sorted_unique_file_path
+        self.sorted_unique_path = sorted_unique_file_path
 
     def table_frequency_create(self ,database):
         create_frequency_table = f'''CREATE TABLE variant_frequency_table (
